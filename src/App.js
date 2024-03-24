@@ -36,11 +36,9 @@ function App() {
     setLoading(false);
   };
   useEffect(() => {
-    if (city == null) {
-      setLoading(true);
+    if (city == "") {
       getCurrentLocation();
     } else {
-      setLoading(true);
       getWeatherByCity();
     }
   }, [city]);
