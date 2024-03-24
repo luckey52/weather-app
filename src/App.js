@@ -17,6 +17,7 @@ function App() {
       getWeatherByCurrentLocation(lat, lon);
     });
   };
+
   const getWeatherByCurrentLocation = async (lat, lon) => {
     let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=daa94aa6d5470d6352cc829cbad13b34&units=metric`;
     setLoading(true);
@@ -35,12 +36,22 @@ function App() {
     setLoading(false);
   };
   useEffect(() => {
-    if (city == "") {
+    if (city == null) {
+      setLoading(true);
       getCurrentLocation();
     } else {
+      setLoading(true);
       getWeatherByCity();
     }
   }, [city]);
+
+  const handleCityChange = (city) => {
+    if (city === "current") {
+      setCity(null);
+    } else {
+      setCity(city);
+    }
+  };
 
   return (
     <div>
@@ -57,7 +68,11 @@ function App() {
       ) : (
         <div className="container">
           <WeatherBox weather={weather} />
-          <WeatherButton cities={cities} setCity={setCity} />
+          <WeatherButton
+            cities={cities}
+            handleCityChange={handleCityChange}
+            setCity={setCity}
+          />
         </div>
       )}
     </div>
