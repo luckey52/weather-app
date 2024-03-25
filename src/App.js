@@ -2,13 +2,13 @@ import "./App.css";
 import { useEffect, useState } from "react";
 import WeatherBox from "./component/WeatherBox";
 import WeatherButton from "./component/WeatherButton";
-import "bootstrap/dist/css/bootstrap.min.css";
 import ClipLoader from "react-spinners/ClipLoader";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 function App() {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [city, setCity] = useState("");
+  const [city, setCity] = useState(null);
   const cities = ["Paris", "New York", "Tokyo", "Seoul"];
   const [apiError, setAPIError] = useState("");
 
@@ -48,16 +48,18 @@ function App() {
     }
   };
   useEffect(() => {
-    if (city == "") {
+    if (city == null) {
+      setLoading(true);
       getCurrentLocation();
     } else {
+      setLoading(true);
       getWeatherByCity();
     }
   }, [city]);
 
   const handleCityChange = (city) => {
     if (city === "current") {
-      setCity("");
+      setCity(null);
     } else {
       setCity(city);
     }
@@ -81,7 +83,7 @@ function App() {
           <WeatherButton
             cities={cities}
             handleCityChange={handleCityChange}
-            setCity={setCity}
+            selectedCity={city}
           />
         </div>
       ) : (
