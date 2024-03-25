@@ -12,10 +12,14 @@ body {
   height: 100vh;
   flex-direction: column;
 }
-
+.weather-buttons {
+  display: flex;
+  gap: 10px;
+}
 .weather-box {
   border: 3px solid white;
   padding: 50px;
   border-radius: 30px;
   background-color: azure;
+  margin-bottom: 20px;
 }

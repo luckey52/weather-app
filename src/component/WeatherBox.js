@@ -6,9 +6,9 @@ const WeatherBox = ({ weather }) => {
   const tempFahren = ((weather?.main.temp * 9) / 5 + 32).toFixed(2);
   return (
     <div className="weather-box">
-      <div>{weather?.name}</div>
+      <h1>{weather?.name}</h1>
       <h2>
-        {tempCel}C/{tempFahren}F
+        {tempCel}ºC/{tempFahren}ºF
       </h2>
       <h3>{weather?.weather[0].description}</h3>
     </div>

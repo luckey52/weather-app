@@ -9,7 +9,9 @@ function App() {
   const [weather, setWeather] = useState(null);
   const [loading, setLoading] = useState(false);
   const [city, setCity] = useState("");
-  const cities = ["paris", "new york", "tokyo", "seoul"];
+  const cities = ["Paris", "New York", "Tokyo", "Seoul"];
+  const [apiError, setAPIError] = useState("");
+
   const getCurrentLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       let lat = position.coords.latitude;
@@ -19,21 +21,31 @@ function App() {
   };
 
   const getWeatherByCurrentLocation = async (lat, lon) => {
-    let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=daa94aa6d5470d6352cc829cbad13b34&units=metric`;
-    setLoading(true);
-    let response = await fetch(url);
-    let data = await response.json();
-    setWeather(data);
-    setLoading(false);
+    try {
+      let url = `https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=daa94aa6d5470d6352cc829cbad13b34&units=metric`;
+      setLoading(true);
+      let response = await fetch(url);
+      let data = await response.json();
+      setWeather(data);
+      setLoading(false);
+    } catch (err) {
+      setAPIError(err.message);
+      setLoading(false);
+    }
   };
 
   const getWeatherByCity = async () => {
-    let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=daa94aa6d5470d6352cc829cbad13b34&units=metric`;
-    setLoading(true);
-    let response = await fetch(url);
-    let data = await response.json();
-    setWeather(data);
-    setLoading(false);
+    try {
+      let url = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=daa94aa6d5470d6352cc829cbad13b34&units=metric`;
+      setLoading(true);
+      let response = await fetch(url);
+      let data = await response.json();
+      setWeather(data);
+      setLoading(false);
+    } catch (err) {
+      setAPIError(err.message);
+      setLoading(false);
+    }
   };
   useEffect(() => {
     if (city == "") {
@@ -45,7 +57,7 @@ function App() {
 
   const handleCityChange = (city) => {
     if (city === "current") {
-      setCity(null);
+      setCity("");
     } else {
       setCity(city);
     }
@@ -63,7 +75,7 @@ function App() {
             data-testid="loader"
           />
         </div>
-      ) : (
+      ) : !apiError ? (
         <div className="container">
           <WeatherBox weather={weather} />
           <WeatherButton
@@ -72,6 +84,8 @@ function App() {
             setCity={setCity}
           />
         </div>
+      ) : (
+        apiError
       )}
     </div>
   );
